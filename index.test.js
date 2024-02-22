@@ -47,4 +47,33 @@ describe("Testing resaurant routes", () =>{
 
     });
 
+    it("POST /restaurants adds a new restaurant", async () => {
+        await request(app).post("/restaurants").send({ name: "Arby", location: "test", cuisine: "crap" });
+        const response = await request(app).get("/restaurants");
+        const responseData = JSON.parse(response.text);
+        console.log(JSON.stringify(responseData, null, 2));
+
+        expect(responseData[3].id).toBe(4);
+        expect(responseData[3].name).toBe("Arby");
+        expect(responseData[3].location).toBe("test");
+        expect(responseData[3].cuisine).toBe("crap");
+
+    });
+
+    it("PUT /restaurants updates restaurant", async () => {
+        await request(app).put("/restaurants/4").send({ name: "Jack in box" });
+        const response = await request(app).get("/restaurants/4");
+        const responseData = JSON.parse(response.text);
+        
+        expect(responseData.name).toBe("Jack in box");
+    });
+
+    it("DELETE /restaurants/:id works", async () => {
+        await request(app).delete("/restaurants/4");
+        const response = await request(app).get("/restaurants");
+        const responseData = JSON.parse(response.text);
+        
+        expect(responseData[3]).toBeNull;
+    })
 });
+

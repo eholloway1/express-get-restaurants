@@ -19,14 +19,14 @@ app.get("/restaurants/:id", async (req, res) => {
 });
 
 app.post("/restaurants", async (req, res) => {
-    await Restaurant.create(req.body.restaurant);
+    await Restaurant.create(req.body);
     const restaurants = await Restaurant.findAll();
     res.json(restaurants);
 });
 
 app.put("/restaurants/:id", async (req, res) => {
     const restaurant = await Restaurant.findByPk(req.params.id);
-    await restaurant.update(req.body.update);
+    await restaurant.update(req.body);
     const restaurants = await Restaurant.findAll();
     res.json(restaurants);
 });
@@ -37,5 +37,6 @@ app.delete("/restaurants/:id", async (req, res) => {
     const restaurants = await Restaurant.findAll();
     res.json(restaurants);
 });
+
 
 module.exports = app;
